@@ -2,59 +2,43 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')  
-        DOCKERHUB_REPO = 'your-dockerhub-username/thapar-news'
-        DOCKERHUB_TAG = "latest"  // Or use "${BUILD_NUMBER}" for unique tag
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        BACKEND_IMAGE = "yatinjindal21/campusEcho_backend"
+        FRONTEND_IMAGE = "yatinjindal21/campusEcho_frontend"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo/thapar-news.git'
+                git 'https://github.com/yatinjindal21/CampusEcho.git'
             }
         }
 
-        stage('Build Client') {
-            steps {
-                dir('client') {
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
-            }
-        }
-
-        stage('Build Server') {
-            steps {
-                dir('server') {
-                    sh 'npm install'
-                }
-            }
-        }
-
-        stage('Docker Build') {
+        stage('Build Backend Image') {
             steps {
                 script {
-                    sh "docker build -t $DOCKERHUB_REPO:$DOCKERHUB_TAG ."
+                    docker.build("${BACKEND_IMAGE}:latest", "./server")
                 }
             }
         }
 
-        stage('Docker Login & Push') {
+        stage('Build Frontend Image') {
             steps {
                 script {
-                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    sh "docker push $DOCKERHUB_REPO:$DOCKERHUB_TAG"
+                    docker.build("${FRONTEND_IMAGE}:latest", "./client")
                 }
             }
         }
-    }
 
-    post {
-        success {
-            echo "✅ Docker image pushed to Docker Hub: $DOCKERHUB_REPO:$DOCKERHUB_TAG"
-        }
-        failure {
-            echo "❌ Build failed!"
+        stage('Push Images to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                        docker.image("${BACKEND_IMAGE}:latest").push()
+                        docker.image("${FRONTEND_IMAGE}:latest").push()
+                    }
+                }
+            }
         }
     }
 }
