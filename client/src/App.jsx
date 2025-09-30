@@ -21,80 +21,80 @@ import Navbar from './components/Navbar';
 
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
-  if (!user) return <Navigate to="/login" />;
-  return children;
+    const { user } = useContext(AuthContext);
+    if (!user) return <Navigate to="/login" />;
+    return children;
 };
 
 
 export default function App() {
-  const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-  return (
-    <>
-    <Navbar />
-    <div className="pt-16">
-      <Routes>
-        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
-        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/news/:category" element={<ProtectedRoute><NewsSection /></ProtectedRoute>} />
-        <Route path="/post-news" element={<ProtectedRoute><PostNews /></ProtectedRoute>} />
-        <Route path="/post-referral" element={<ProtectedRoute><PostReferral /></ProtectedRoute>} />
-        <Route path="/admin-panel" element={
-          <ProtectedRoute>
-            {user?.role === 'admin' ? <AdminPanel /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
-        <Route path="/post-news-academic" element={
-          <ProtectedRoute>
-            {user?.role === 'admin' ? <PostAcademicNews /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
-        <Route path="/post-news-placement" element={
-          <ProtectedRoute>
-            {user?.role === 'admin' ? <PostPlacementNews /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
-        <Route path="/post-society-news" element={
-          <ProtectedRoute>
-            {user?.role === 'society_head' ? <PostSocietyNews /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
-        <Route path="/post-alumni-news" element={
-          <ProtectedRoute>
-            {user?.role === 'alumni' ? <PostAlumniNews /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
+    return (
+        <>
+            <Navbar />
+            <div className="pt-16">
+                <Routes>
+                    <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
+                    <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+                    <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                    <Route path="/news/:category" element={<ProtectedRoute><NewsSection /></ProtectedRoute>} />
+                    <Route path="/post-news" element={<ProtectedRoute><PostNews /></ProtectedRoute>} />
+                    <Route path="/post-referral" element={<ProtectedRoute><PostReferral /></ProtectedRoute>} />
+                    <Route path="/admin-panel" element={
+                        <ProtectedRoute>
+                            {user?.role === 'admin' ? <AdminPanel /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/post-news-academic" element={
+                        <ProtectedRoute>
+                            {user?.role === 'admin' ? <PostAcademicNews /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/post-news-placement" element={
+                        <ProtectedRoute>
+                            {user?.role === 'admin' ? <PostPlacementNews /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/post-society-news" element={
+                        <ProtectedRoute>
+                            {user?.role === 'society_head' ? <PostSocietyNews /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/post-alumni-news" element={
+                        <ProtectedRoute>
+                            {user?.role === 'alumni' ? <PostAlumniNews /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
 
-        <Route path="/search-alumni" element={
-          <ProtectedRoute>
-            {user?.role === 'student' ? <SearchAlumni /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
+                    <Route path="/search-alumni" element={
+                        <ProtectedRoute>
+                            {user?.role === 'student' ? <SearchAlumni /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
 
-        <Route path="/my-referrals" element={
-          <ProtectedRoute>
-            {user?.role === 'alumni' ? <MyReferrals /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
+                    <Route path="/my-referrals" element={
+                        <ProtectedRoute>
+                            {user?.role === 'alumni' ? <MyReferrals /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
 
-        <Route path="/referral-status" element={
-          <ProtectedRoute>
-            {user?.role === 'student' ? <MyReferralStatus /> : <Navigate to="/dashboard" />}
-          </ProtectedRoute>
-        } />
+                    <Route path="/referral-status" element={
+                        <ProtectedRoute>
+                            {user?.role === 'student' ? <MyReferralStatus /> : <Navigate to="/dashboard" />}
+                        </ProtectedRoute>
+                    } />
 
-        <Route path="/news-detail/:id" element={
-          <ProtectedRoute>
-            <NewsDetail />
-          </ProtectedRoute>
-        } />
+                    <Route path="/news-detail/:id" element={
+                        <ProtectedRoute>
+                            <NewsDetail />
+                        </ProtectedRoute>
+                    } />
 
-        </Routes>
-      </div>
-    </>
+                </Routes>
+            </div>
+        </>
 
-  );
+    );
 }
