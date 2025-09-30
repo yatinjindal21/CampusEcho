@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        BACKEND_IMAGE = "yatinjindal21/campusEcho_backend"
-        FRONTEND_IMAGE = "yatinjindal21/campusEcho_frontend"
+        BACKEND_IMAGE = "yatinjindal21/campusecho_backend"
+        FRONTEND_IMAGE = "yatinjindal21/campusecho_frontend"
     }
 
     stages {
